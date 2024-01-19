@@ -4,10 +4,11 @@ import { ERROR_MESSAGES } from 'src/common/response';
 
 @Catch()
 export class AllExceptionsFilter extends BaseExceptionFilter {
-    private readonly logger = new Logger("Exception")
+    private readonly logger = new Logger("Exception", { timestamp: true })
     catch(exception: unknown, host: ArgumentsHost) {
-        const isHttpException = exception instanceof HttpException;
         this.logger.error(JSON.stringify(exception));
+
+        const isHttpException = exception instanceof HttpException;
         const status = isHttpException ? exception?.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
         let messages = [];
         if (isHttpException && exception?.getResponse()) {
