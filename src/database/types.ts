@@ -1,0 +1,43 @@
+export enum Visibility {
+    PUBLIC,
+    PRIVATE,
+    UNLISTED
+}
+
+export enum City {
+    KARACHI
+}
+
+export enum ConsigmentType {
+    LOCAL,
+    DOMESTIC,
+    INTERNATIONAL
+}
+
+export enum ConsigmentDelivery {
+    SAME_DAY,
+    NEXT_DAY,
+    OVERNIGHT
+}
+
+export enum ConsigmentStatuses {
+    RECEIVED_FOR_DEVLIVERY,
+    PROCESS_FOR_DELIVERY,
+
+    ON_HOLD,
+    ON_HOLD_BY_CLIENT,
+    ON_HOLD_BY_FACULTY,
+
+    ARRIVED_AT_WAREHOUSE_FOR_DELIVERY,
+    ASSIGNED_TO_A_DELIVERY_RIDER,
+    OUT_FOR_DELIVERY,
+    DELIVERED,
+
+    NOT_DELIVERED_DUE_TO_WEATHER_ISSUE_IN_CITY,
+    NOT_DELIVERED_DUE_TO_CLIENT_NOT_AVALIBILITY,
+    NOT_DELIVERED_DUE_TO_RIDER_VEHICLE_ISSUE,
+    NOT_DELIVER_DUE_TO_RIDER_ACCIDENTIAL_ISSUE,
+    NOT_DELIVERED,
+
+    OTHER
+}
