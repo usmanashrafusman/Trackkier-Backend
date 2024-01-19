@@ -1,5 +1,5 @@
 import { HttpStatus } from "@nestjs/common"
-import { IReponseMessage, IResponse, IResponseData } from "../config"
+import { IReponseMessage, IResponse, IResponseData } from "src/common/config"
 
 type Messages = IReponseMessage[] | string
 
