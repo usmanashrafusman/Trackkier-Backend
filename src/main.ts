@@ -14,7 +14,8 @@ import { ConfigService } from '@nestjs/config';
   app.setGlobalPrefix("api/v1");
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
-    transform: true
+    transform: true,
+    forbidNonWhitelisted: true,
   }));
   await app.listen(PORT);
 })()

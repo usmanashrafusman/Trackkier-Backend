@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateConsigmentDto } from './dto/create-consigment.dto';
 import { UpdateConsigmentDto } from './dto/update-consigment.dto';
 import { Address } from './entities/address.entity';
