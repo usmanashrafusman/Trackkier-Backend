@@ -1,5 +1,5 @@
 
-import { IsString, IsNotEmpty, IsEnum } from 'class-validator';
+import { IsString, IsNotEmpty, IsEnum, ValidateIf } from 'class-validator';
 import { ConsigmentStatuses } from 'src/database/types';
 
 export class CreateConsigmentStatusDto {
@@ -11,8 +11,8 @@ export class CreateConsigmentStatusDto {
     @IsEnum(ConsigmentStatuses)
     status: ConsigmentStatuses
 
-    // @ValidateIf((obj) => obj.status === ConsigmentStatuses.OTHER)
-    // @IsNotEmpty()
-    // @IsString()
-    // message?: string
+    @ValidateIf((obj) => obj.status === ConsigmentStatuses.OTHER)
+    @IsNotEmpty()
+    @IsString()
+    message?: string
 }
