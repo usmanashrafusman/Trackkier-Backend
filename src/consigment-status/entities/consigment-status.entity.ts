@@ -1,11 +1,11 @@
 import { AbstractEntity } from "src/database/abstract.entity";
-import { Entity, OneToOne, Column, JoinColumn, ManyToOne } from "typeorm";
+import { Entity, Column, JoinColumn, ManyToOne } from "typeorm";
 import { Consigment } from "src/consigment/entities/consigment.entity";
 import { ConsigmentStatuses } from "src/database/types";
 
 @Entity()
 export class ConsigmentStatus extends AbstractEntity<ConsigmentStatus>{
-    @ManyToOne(() => Consigment, { eager: true })
+    @ManyToOne(() => Consigment, { cascade: true })
     @JoinColumn()
     consigment: Consigment
 

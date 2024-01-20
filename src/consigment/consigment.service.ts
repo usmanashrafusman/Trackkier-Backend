@@ -7,8 +7,10 @@ import { NotFoundException } from 'src/common/exceptions';
 
 import { CreateConsigmentDto } from './dto/create-consigment.dto';
 import { UpdateConsigmentDto } from './dto/update-consigment.dto';
+
 import { Address } from './entities/address.entity';
 import { Consigment } from './entities/consigment.entity';
+import { ConsigmentStatus } from 'src/consigment-status/entities/consigment-status.entity';
 
 @Injectable()
 export class ConsigmentService {
@@ -22,7 +24,11 @@ export class ConsigmentService {
       consignor,
       weight
     });
-    const entity = await this.entityManager.save(consigment)
+    const status = new ConsigmentStatus({
+      consigment,
+    })
+
+    const entity = (await this.entityManager.save(status)).consigment;
     return new SuccessfulResponse<Consigment>({ entity })
   };
 

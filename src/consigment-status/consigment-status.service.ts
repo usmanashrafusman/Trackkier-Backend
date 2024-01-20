@@ -25,9 +25,6 @@ export class ConsigmentStatusService {
           id: consigmentId
         }
       },
-      relations: {
-        consigment: true
-      },
       order: {
         createdAt: "DESC"
       }
