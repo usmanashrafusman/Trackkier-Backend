@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
+import { APP_FILTER } from '@nestjs/core';
+import { ConfigModule } from '@nestjs/config';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
-import { ConfigModule } from '@nestjs/config';
 import { ConsigmentModule } from './consigment/consigment.module';
 import { ConsigmentStatusModule } from './consigment-status/consigment-status.module';
-import { APP_FILTER } from '@nestjs/core';
-import { AllExceptionsFilter } from './common/exceptions/AllExceptionsFilter';
+
+import { AllExceptionsFilter } from 'src/common/exceptions';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true }), DatabaseModule, ConsigmentModule, ConsigmentStatusModule],

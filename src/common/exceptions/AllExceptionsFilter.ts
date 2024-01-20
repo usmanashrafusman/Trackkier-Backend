@@ -4,7 +4,7 @@ import { ERROR_MESSAGES } from 'src/common/response';
 import { IResponse } from 'src/common/config';
 
 @Catch()
-export class AllExceptionsFilter extends BaseExceptionFilter {
+export default class AllExceptionsFilter extends BaseExceptionFilter {
     private readonly logger = new Logger("Exception", { timestamp: true, })
     catch(exception: unknown, host: ArgumentsHost) {
         this.logger.error(JSON.stringify(exception));

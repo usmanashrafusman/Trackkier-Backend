@@ -11,6 +11,6 @@ export class ConsigmentStatus extends AbstractEntity<ConsigmentStatus>{
     @Column({ type: "enum", default: ConsigmentStatuses.RECEIVED_FOR_DEVLIVERY })
     status: ConsigmentStatuses
 
-    @Column("string")
+    @Column("string", { nullable: true })
     message: string
 }

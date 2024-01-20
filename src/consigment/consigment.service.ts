@@ -6,6 +6,7 @@ import { EntityManager, Repository } from 'typeorm';
 import { Consigment } from './entities/consigment.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import SuccessfulResponse from 'src/common/http-response/SuccessfulResponse';
+import NotFoundException from 'src/common/exceptions/NotFoundException';
 
 @Injectable()
 export class ConsigmentService {
@@ -32,6 +33,9 @@ export class ConsigmentService {
     const entity = await this.consigmentRepository.findOne({
       where: { id }
     });
+    if (!entity) {
+      throw new NotFoundException()
+    }
     return new SuccessfulResponse<Consigment>({ entity })
   };
 
