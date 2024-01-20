@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import { SuccessfulResponse } from 'src/common/http-response';
 import { NotFoundException } from 'src/common/exceptions';
@@ -11,12 +11,14 @@ import { UpdateConsigmentDto } from './dto/update-consigment.dto';
 import { Address } from './entities/address.entity';
 import { Consigment } from './entities/consigment.entity';
 import { ConsigmentStatus } from 'src/consigment-status/entities/consigment-status.entity';
+import EntityManager from 'src/common/entity-manager';
 
 @Injectable()
 export class ConsigmentService {
-  constructor(@InjectRepository(Consigment) private readonly consigmentRepository: Repository<Consigment>, private readonly entityManager: EntityManager) { }
+  constructor(@InjectRepository(Consigment) private readonly consigmentRepository: Repository<Consigment>) { }
 
   async create({ weight, ...consigmentDto }: CreateConsigmentDto) {
+    const entityManager = EntityManager.entityManager;
     const consignee = new Address(consigmentDto.consignee);
     const consignor = new Address(consigmentDto.consignor);
     const consigment = new Consigment({
@@ -27,8 +29,7 @@ export class ConsigmentService {
     const status = new ConsigmentStatus({
       consigment,
     })
-
-    const entity = (await this.entityManager.save(status)).consigment;
+    const entity = (await entityManager.save(status)).consigment;
     return new SuccessfulResponse<Consigment>({ entity })
   };
 
