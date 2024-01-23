@@ -11,42 +11,44 @@ import { UpdateConsigmentDto } from './dto/update-consigment.dto';
 import { Address } from './entities/address.entity';
 import { Consigment } from './entities/consigment.entity';
 import { ConsigmentStatus } from 'src/consigment-status/entities/consigment-status.entity';
-import EntityManager from 'src/common/entity-manager';
-
+import EntityManagerService from 'src/entity-manager/entity-manager.service';
 @Injectable()
 export class ConsigmentService {
-  constructor(@InjectRepository(Consigment) private readonly consigmentRepository: Repository<Consigment>) { }
+  constructor(
+    @InjectRepository(Consigment)
+    private readonly consigmentRepository: Repository<Consigment>,
+    private entityManager: EntityManagerService,
+  ) {}
 
   async create({ weight, ...consigmentDto }: CreateConsigmentDto) {
-    const entityManager = EntityManager.entityManager;
     const consignee = new Address(consigmentDto.consignee);
     const consignor = new Address(consigmentDto.consignor);
     const consigment = new Consigment({
       consignee,
       consignor,
-      weight
+      weight,
     });
     const status = new ConsigmentStatus({
       consigment,
-    })
-    const entity = (await entityManager.save(status)).consigment;
-    return new SuccessfulResponse<Consigment>({ entity })
-  };
+    });
+    const entity = (await this.entityManager.save(status)).consigment;
+    return new SuccessfulResponse<Consigment>({ entity });
+  }
 
   async findAll() {
     const entities = await this.consigmentRepository.find();
-    return new SuccessfulResponse<Consigment[]>({ entities })
-  };
+    return new SuccessfulResponse<Consigment[]>({ entities });
+  }
 
   async findOne(id: string) {
     const entity = await this.consigmentRepository.findOne({
-      where: { id }
+      where: { id },
     });
     if (!entity) {
-      throw new NotFoundException()
+      throw new NotFoundException();
     }
-    return new SuccessfulResponse<Consigment>({ entity })
-  };
+    return new SuccessfulResponse<Consigment>({ entity });
+  }
 
   update(id: string, updateConsigmentDto: UpdateConsigmentDto) {
     return `This action updates a #${id} consigment`;
