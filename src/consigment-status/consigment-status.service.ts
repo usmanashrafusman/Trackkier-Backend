@@ -6,32 +6,40 @@ import { Repository } from 'typeorm';
 import { SuccessfulResponse } from 'src/common/http-response';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Consigment } from 'src/consigment/entities/consigment.entity';
-import EntityManager from 'src/common/entity-manager';
+import EntityManagerService from 'src/entity-manager/entity-manager.service';
 
 @Injectable()
 export class ConsigmentStatusService {
-  constructor(@InjectRepository(ConsigmentStatus) private readonly consigmentStatusRepository: Repository<ConsigmentStatus>) { }
+  constructor(
+    @InjectRepository(ConsigmentStatus)
+    private readonly consigmentStatusRepository: Repository<ConsigmentStatus>,
+    private readonly entityManager: EntityManagerService,
+  ) {}
 
-  async create({ consigmentId, ...consigmentStatus }: CreateConsigmentStatusDto) {
-    const entityManager = EntityManager.entityManager;
-    const consigment = entityManager.create(Consigment, { id: consigmentId });
+  async create({
+    consigmentId,
+    ...consigmentStatus
+  }: CreateConsigmentStatusDto) {
+    const consigment = this.entityManager.create(Consigment, {
+      id: consigmentId,
+    });
     const status = new ConsigmentStatus({ ...consigmentStatus, consigment });
-    const entity = await entityManager.save(status);
-    return new SuccessfulResponse({ entity })
+    const entity = await this.entityManager.save(status);
+    return new SuccessfulResponse({ entity });
   }
 
   async findAll(consigmentId?: string) {
     const entities = await this.consigmentStatusRepository.find({
       where: {
         consigment: {
-          id: consigmentId
-        }
+          id: consigmentId,
+        },
       },
       order: {
-        createdAt: "DESC"
-      }
+        createdAt: 'DESC',
+      },
     });
-    return new SuccessfulResponse({ entities })
+    return new SuccessfulResponse({ entities });
   }
 
   findOne(id: number) {
