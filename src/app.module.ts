@@ -9,17 +9,27 @@ import { ConsigmentStatusModule } from './consigment-status/consigment-status.mo
 
 import { AllExceptionsFilter } from 'src/common/exceptions';
 import { TransactionInterceptor } from 'src/common/interceptors/TransactionInterceptor';
+import { EntityManagerModule } from 'src/entity-manager/entity-manager.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), DatabaseModule, ConsigmentModule, ConsigmentStatusModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    DatabaseModule,
+    EntityManagerModule,
+    ConsigmentModule,
+    ConsigmentStatusModule,
+  ],
   controllers: [AppController],
-  providers: [{
-    provide: APP_FILTER,
-    useClass: AllExceptionsFilter,
-  }, {
-    provide: APP_INTERCEPTOR,
-    useClass: TransactionInterceptor,
-  }, AppService],
-
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TransactionInterceptor,
+    },
+    AppService,
+  ],
 })
-export class AppModule { }
+export class AppModule {}
