@@ -1,31 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { CreateConsigmentStatusDto } from './dto/create-consigment-status.dto';
-import { UpdateConsigmentStatusDto } from './dto/update-consigment-status.dto';
 import { ConsigmentStatus } from './entities/consigment-status.entity';
 import { Repository } from 'typeorm';
 import { SuccessfulResponse } from 'src/common/http-response';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Consigment } from 'src/consigment/entities/consigment.entity';
-import EntityManagerService from 'src/entity-manager/entity-manager.service';
 
 @Injectable()
 export class ConsigmentStatusService {
   constructor(
     @InjectRepository(ConsigmentStatus)
     private readonly consigmentStatusRepository: Repository<ConsigmentStatus>,
-    private readonly entityManager: EntityManagerService,
+    @InjectRepository(Consigment)
+    private readonly consigmentRepository: Repository<Consigment>,
   ) {}
 
   async create({
     consigmentId,
     ...consigmentStatus
   }: CreateConsigmentStatusDto) {
-    const consigment = this.entityManager.create(Consigment, {
+    const consigment = this.consigmentRepository.create({
       id: consigmentId,
     });
     const status = new ConsigmentStatus({ ...consigmentStatus, consigment });
-    const entity = await this.entityManager.save(status);
-    return new SuccessfulResponse({ entity });
+    const entity = await this.consigmentStatusRepository.save(status);
+    return SuccessfulResponse.send<ConsigmentStatus>({ entity });
   }
 
   async findAll(consigmentId?: string) {
@@ -39,18 +38,6 @@ export class ConsigmentStatusService {
         createdAt: 'DESC',
       },
     });
-    return new SuccessfulResponse({ entities });
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} consigmentStatus`;
-  }
-
-  update(id: number, updateConsigmentStatusDto: UpdateConsigmentStatusDto) {
-    return `This action updates a #${id} consigmentStatus`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} consigmentStatus`;
+    return SuccessfulResponse.send<ConsigmentStatus[]>({ entities });
   }
 }

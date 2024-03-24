@@ -9,17 +9,27 @@ class SuccessfulResponse<T> implements IResponse<T> {
     status = HttpStatus.OK
     messages: IReponseMessage[]
 
-    constructor(data: IResponseData<T>, messages?: Messages) {
-        this.data = data;
-        this.messages = []
-        if (typeof messages === "string") {
+    private constructor(){}
+
+    public static send<T>(data: IResponseData<T>, msg?: Messages){
+        let messages :IReponseMessage[]= []
+        const success = true;
+        const status = HttpStatus.OK;
+      
+        if (typeof msg === "string") {
             const message: IReponseMessage = {
-                code: 200,
-                message: messages
+                code: HttpStatus.OK,
+                message: msg
             }
-            this.messages.push(message);
-        } else if (Array.isArray(messages)) {
-            this.messages = messages
+            messages.push(message);
+        } else if (Array.isArray(msg)) {
+            messages = msg
+        }
+        return {
+            success,
+            status,
+            data,
+            messages
         }
     }
 }

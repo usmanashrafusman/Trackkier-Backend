@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ConsigmentStatusService } from './consigment-status.service';
 import { CreateConsigmentStatusDto } from './dto/create-consigment-status.dto';
-import { UpdateConsigmentStatusDto } from './dto/update-consigment-status.dto';
 import { IResponse } from 'src/common/config';
 import { ConsigmentStatus } from './entities/consigment-status.entity';
 
@@ -21,18 +20,4 @@ export class ConsigmentStatusController {
     return res;
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.consigmentStatusService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateConsigmentStatusDto: UpdateConsigmentStatusDto) {
-    return this.consigmentStatusService.update(+id, updateConsigmentStatusDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.consigmentStatusService.remove(+id);
-  }
 }

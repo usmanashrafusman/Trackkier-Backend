@@ -2,22 +2,22 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { SuccessfulResponse } from 'src/common/http-response';
+import { DeleteResponse, SuccessfulResponse } from 'src/common/http-response';
 import { NotFoundException } from 'src/common/exceptions';
 
 import { CreateConsigmentDto } from './dto/create-consigment.dto';
-import { UpdateConsigmentDto } from './dto/update-consigment.dto';
 
 import { Address } from './entities/address.entity';
 import { Consigment } from './entities/consigment.entity';
 import { ConsigmentStatus } from 'src/consigment-status/entities/consigment-status.entity';
-import EntityManagerService from 'src/entity-manager/entity-manager.service';
+
 @Injectable()
 export class ConsigmentService {
   constructor(
     @InjectRepository(Consigment)
     private readonly consigmentRepository: Repository<Consigment>,
-    private entityManager: EntityManagerService,
+    @InjectRepository(ConsigmentStatus)
+    private readonly consigmentStatusRepository: Repository<ConsigmentStatus>,
   ) {}
 
   async create({ weight, ...consigmentDto }: CreateConsigmentDto) {
@@ -28,16 +28,17 @@ export class ConsigmentService {
       consignor,
       weight,
     });
+    console.log(consigment , "WEIGHT")
     const status = new ConsigmentStatus({
       consigment,
     });
-    const entity = (await this.entityManager.save(status)).consigment;
-    return new SuccessfulResponse<Consigment>({ entity });
+    const entity = (await this.consigmentStatusRepository.save(status)).consigment;
+    return SuccessfulResponse.send<Consigment>({ entity });
   }
 
   async findAll() {
     const entities = await this.consigmentRepository.find();
-    return new SuccessfulResponse<Consigment[]>({ entities });
+    return SuccessfulResponse.send<Consigment[]>({ entities });
   }
 
   async findOne(id: string) {
@@ -47,14 +48,19 @@ export class ConsigmentService {
     if (!entity) {
       throw new NotFoundException();
     }
-    return new SuccessfulResponse<Consigment>({ entity });
+    return SuccessfulResponse.send<Consigment>({ entity });
   }
 
-  update(id: string, updateConsigmentDto: UpdateConsigmentDto) {
-    return `This action updates a #${id} consigment`;
-  }
+  async remove(id: string) {
+    const isExist = await this.consigmentRepository.exists({
+      where: { id },
+    });
+    if (!isExist) {
+      throw new NotFoundException();
+    }
 
-  remove(id: string) {
-    return `This action removes a #${id} consigment`;
+    const entity = await this.consigmentRepository.softDelete(id);
+    const isDeleted = entity.affected === 1;
+    return SuccessfulResponse.send<DeleteResponse>({ entity :{isDeleted}});
   }
 }

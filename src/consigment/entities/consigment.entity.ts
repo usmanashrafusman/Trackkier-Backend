@@ -3,7 +3,6 @@ import { Entity, OneToOne, Column, JoinColumn, ManyToOne } from "typeorm";
 import { ConsigmentDelivery, ConsigmentType } from "src/database/types";
 
 import { Address } from "./address.entity";
-import { ConsigmentStatus } from "src/consigment-status/entities/consigment-status.entity";
 
 @Entity()
 export class Consigment extends AbstractEntity<Consigment>{
