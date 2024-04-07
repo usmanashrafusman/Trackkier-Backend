@@ -57,9 +57,10 @@ export class ConsigmentService {
     if (!isExist) {
       throw new NotFoundException();
     }
-
+    console.log(isExist , "IS EXIST")
     const entity = await this.consigmentRepository.softDelete(id);
     const isDeleted = entity.affected === 1;
-    return SuccessfulResponse.send<DeleteResponse>({ entity :{isDeleted}});
+    const msg = `Consigment with ${id} is deleted`
+    return SuccessfulResponse.send<DeleteResponse>({ entity :{isDeleted}} , msg);
   }
 }

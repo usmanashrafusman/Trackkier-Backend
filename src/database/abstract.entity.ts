@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column } from 'typeorm';
+import { PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column , DeleteDateColumn} from 'typeorm';
 import { Visibility } from './types';
 
 export class AbstractEntity<T> {
@@ -20,6 +20,9 @@ export class AbstractEntity<T> {
 
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @DeleteDateColumn({nullable:true})
+    deletedAt:Date
 
     constructor(entity: Partial<T>) {
         Object.assign(this, entity);
