@@ -31,13 +31,13 @@ jobs:
 
     steps:
       - name: Pull Docker image from Docker Hub
-        run: docker pull usmanashraf033/trackkier-api:latest
+        run: sudo docker pull usmanashraf033/trackkier-api:latest
 
       - name: Stop Existing Docker Container (if any)
-        run: docker stop trackkier-api || true
+        run: sudo docker stop trackkier-api || true
 
       - name: Remove Existing Docker Container (if any)
-        run: docker rm trackkier-api || true
+        run: sudo docker rm trackkier-api || true
 
       - name: Start Docker Container
-        run: docker run -d --name trackkier-api -p 8080:80 usmanashraf033/trackkier-api:latest
+        run: sudo docker run -d --name trackkier-api -p 8080:80 usmanashraf033/trackkier-api:latest
