@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { DeleteResponse, SuccessfulResponse } from 'src/common/http-response';
+import { DeleteResponse, PaginationReponse, SuccessfulResponse } from 'src/common/http-response';
 import { NotFoundException } from 'src/common/exceptions';
 
 import { CreateConsigmentDto } from './dto/create-consigment.dto';
@@ -36,8 +36,9 @@ export class ConsigmentService {
   }
 
   async findAll() {
-    const entities = await this.consigmentRepository.find();
-    return SuccessfulResponse.send<Consigment[]>({ entities });
+    const result = await this.consigmentRepository.find();
+    const total = await this.consigmentRepository.count();
+    return SuccessfulResponse.send<PaginationReponse<Consigment>>({ entities : {result , total}});
   }
 
   async findOne(id: string) {
@@ -57,7 +58,6 @@ export class ConsigmentService {
     if (!isExist) {
       throw new NotFoundException();
     }
-    console.log(isExist , "IS EXIST")
     const entity = await this.consigmentRepository.softDelete(id);
     const isDeleted = entity.affected === 1;
     const msg = `Consigment with ${id} is deleted`
