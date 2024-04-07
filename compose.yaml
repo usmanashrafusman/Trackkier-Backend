@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   mysql:
     image: mysql
@@ -8,8 +7,7 @@ services:
       - .env
     ports:
       - '3306:3306'
-    networks:
-      - trackkier-network
+
   api:
     build:
       context: .
@@ -18,9 +16,6 @@ services:
       - '3000:3000'
     depends_on:
       - mysql
-    networks:
-      - trackkier-network
+
 volumes:
   mysql-data:
-networks:
-  trackkier-network:
