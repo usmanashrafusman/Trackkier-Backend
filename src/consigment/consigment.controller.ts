@@ -3,6 +3,7 @@ import { ConsigmentService } from './consigment.service';
 import { CreateConsigmentDto } from './dto/create-consigment.dto';
 import { Consigment } from './entities/consigment.entity';
 import { IResponse } from 'src/common/config';
+import { PaginationReponse } from 'src/common/http-response';
 
 @Controller('consigment')
 export class ConsigmentController {
@@ -15,7 +16,7 @@ export class ConsigmentController {
   }
 
   @Get()
-  async findAll(): Promise<IResponse<Consigment[]>> {
+  async findAll(): Promise<IResponse<PaginationReponse<Consigment>>> {
     const res = await this.consigmentService.findAll()
     return res
   }
