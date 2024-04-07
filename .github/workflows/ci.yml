@@ -28,6 +28,8 @@ jobs:
   deploy:
     name: Deploy Docker Image on Self-Hosted Runner
     runs-on: self-hosted
+    needs: build
+    if: success()
 
     steps:
       - name: Pull Docker image from Docker Hub
@@ -41,4 +43,3 @@ jobs:
 
       - name: Start Docker Container
         run: sudo docker run -d --name trackkier-api -p 80:8080 --env-file ./.env usmanashraf033/trackkier-api:latest
-
