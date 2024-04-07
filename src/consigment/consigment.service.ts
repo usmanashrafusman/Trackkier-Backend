@@ -28,7 +28,6 @@ export class ConsigmentService {
       consignor,
       weight,
     });
-    console.log(consigment , "WEIGHT")
     const status = new ConsigmentStatus({
       consigment,
     });
