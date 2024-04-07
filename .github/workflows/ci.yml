@@ -5,7 +5,6 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
     name: Build Docker Image
     runs-on: ubuntu-latest
@@ -25,3 +24,20 @@ jobs:
 
     - name: Push Docker image to Docker Hub
       run: docker push usmanashraf033/trackkier-api:latest
+
+  deploy:
+    name: Deploy Docker Image on Self-Hosted Runner
+    runs-on: self-hosted
+
+    steps:
+      - name: Pull Docker image from Docker Hub
+        run: docker pull usmanashraf033/trackkier-api:latest
+
+      - name: Stop Existing Docker Container (if any)
+        run: docker stop trackkier-api || true
+
+      - name: Remove Existing Docker Container (if any)
+        run: docker rm trackkier-api || true
+
+      - name: Start Docker Container
+        run: docker run -d --name trackkier-api -p 8080:80 usmanashraf033/trackkier-api:latest
