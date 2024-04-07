@@ -21,7 +21,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build Docker image
-      run: docker build -t usmanashraf033/hello-node:latest .
+      run: docker build -t usmanashraf033/trackkier-api:latest .
 
     - name: Push Docker image to Docker Hub
-      run: docker push usmanashraf033/hello-node:latest
+      run: docker push usmanashraf033/trackkier-api:latest
