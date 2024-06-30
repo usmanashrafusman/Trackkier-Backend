@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as cookieParser from 'cookie-parser';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 
 import { AppModule } from 'src/app.module';
@@ -23,5 +24,16 @@ import { AppModule } from 'src/app.module';
       forbidNonWhitelisted: true,
     }),
   );
+
+  const options = new DocumentBuilder()
+    .setTitle('API')
+    .setDescription('API docs')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+
+  const document = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup('docs', app, document);
+
   await app.listen(PORT);
 })();

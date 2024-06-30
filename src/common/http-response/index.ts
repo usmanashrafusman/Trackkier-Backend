@@ -4,7 +4,7 @@ export interface DeleteResponse {
     isDeleted:boolean
 }
 
-export interface PaginationReponse<T> {
+export interface PaginationResponse<T> {
     total:number
     result:T[]
 }
