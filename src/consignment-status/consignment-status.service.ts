@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConsignmentStatus } from './entities/consignment-status.entity';
 import { Repository } from 'typeorm';
 import { SuccessfulResponse } from 'src/common/http-response';
@@ -21,8 +21,13 @@ export class ConsignmentStatusService {
     const consignment = this.consignmentRepository.create({
       id: consignmentId,
     });
-    const status = new ConsignmentStatus({ ...consignmentStatus, consignment });
-    const entity = await this.consignmentStatusRepository.save(status);
+    if (!consignment) throw new BadRequestException("Consignment not found");
+    const entity = await this.consignmentStatusRepository.save({
+      consignment: { id: consignment.id },
+      status: consignmentStatus.status,
+      message: consignmentStatus.message,
+    });
+    await this.consignmentRepository.update(consignment.id, { status: entity.status })
     return SuccessfulResponse.send<ConsignmentStatus>({ entity });
   }
 

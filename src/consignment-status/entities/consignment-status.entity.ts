@@ -5,7 +5,7 @@ import { ConsignmentStatuses } from "src/database/types";
 
 @Entity()
 export class ConsignmentStatus extends AbstractEntity<ConsignmentStatus> {
-    @ManyToOne(() => Consignment, { cascade: true })
+    @ManyToOne(() => Consignment)
     @JoinColumn()
     consignment: Consignment
 

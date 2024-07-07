@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsString, IsNotEmpty, ValidateNested, IsOptional, IsEnum, IsObject, IsEmail, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, ValidateNested, IsOptional, IsEnum, IsObject, IsEmail, IsNumber, Min } from 'class-validator';
 import { City, ConsignmentDelivery, ConsignmentType } from 'src/database/types';
 import { TransformToNumber } from 'src/common/decorators';
 import { ApiProperty } from '@nestjs/swagger';
@@ -54,6 +54,13 @@ export class CreateConsignmentDto {
     @TransformToNumber()
     @IsNumber({ allowNaN: false }, { message: "Invalid Weight" })
     weight: number
+
+    @ApiProperty({ example: 1 })
+    @IsOptional()
+    @TransformToNumber()
+    @IsNumber({ allowNaN: false }, { message: "Invalid COD" })
+    @Min(1)
+    COD: number
 
     @ApiProperty({ example: ConsignmentDelivery.SAME_DAY })
     @IsOptional()

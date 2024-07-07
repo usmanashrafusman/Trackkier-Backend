@@ -16,8 +16,17 @@ export class Consignment extends AbstractEntity<Consignment> {
     @JoinColumn()
     consignee: Address
 
+    @Column()
+    status: string
+
     @Column("int")
     weight: number
+
+    @Column("int")
+    price: number
+
+    @Column("int", { nullable: true })
+    COD: number
 
     @Column({ type: "enum", enum: ConsignmentType, default: ConsignmentType.LOCAL })
     type: ConsignmentType
