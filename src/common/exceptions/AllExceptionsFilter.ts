@@ -7,6 +7,7 @@ import { IResponse } from 'src/common/config';
 export default class AllExceptionsFilter extends BaseExceptionFilter {
     private readonly logger = new Logger("Exception", { timestamp: true, })
     catch(exception: unknown, host: ArgumentsHost) {
+        console.error("Exception", exception)
         this.logger.error(JSON.stringify(exception));
 
         const isHttpException = exception instanceof HttpException;
